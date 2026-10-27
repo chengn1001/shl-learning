@@ -65,24 +65,26 @@ import java.util.*;
  */
 public class Solution_20261024_V1 {
 
+    /** 返回所有名字的最长公共前缀（小写）；无公共前缀或无名字时返回空串。 */
     public static String getTown(String[] peopleNames) {
-        if (peopleNames.length == 0) return "";
-        String first = peopleNames[0];
-        int len = first.length();
+        if (peopleNames.length == 0) return "";             // N = 0：没有人，直接返回空
+        String first = peopleNames[0];                      // 以第一个名字为比较基准
+        int len = first.length();                           // 当前公共前缀长度，初始为基准全长
         for (String s : peopleNames) {
             int j = 0;
+            // 逐字符比较（忽略大小写），遇到不同或任一字符串结束即停止
             while (j < len && j < s.length()
                     && Character.toLowerCase(first.charAt(j)) == Character.toLowerCase(s.charAt(j))) j++;
-            len = j;
+            len = j;                                        // 公共前缀只会越比越短
         }
-        return first.substring(0, len).toLowerCase();
+        return first.substring(0, len).toLowerCase();       // 题目要求输出小写
     }
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
+        int n = in.nextInt();                               // 第 1 行：人数 N
         String[] names = new String[n];
-        for (int i = 0; i < n; i++) names[i] = in.next();
-        System.out.print(getTown(names));
+        for (int i = 0; i < n; i++) names[i] = in.next();   // 第 2 行：N 个名字（N = 0 时不会读取）
+        System.out.print(getTown(names));                   // 与模板一致，用 print 不换行
     }
 }

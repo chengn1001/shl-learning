@@ -65,18 +65,29 @@ import java.util.Scanner;
  */
 public class Solution_20261024_V2 {
 
+    /**
+     * 返回所有名字的最长公共前缀（小写）；无公共前缀或无名字时返回空串。
+     *
+     * @param peopleNames 所有人的名字
+     * @return 小镇名字（最长公共前缀，小写）
+     */
     public static String getTown(String[] peopleNames) {
+        // N = 0：没有人，直接返回空串，main 中 print 空串即"不输出任何内容"
         if (peopleNames.length == 0) {
             return "";
         }
 
+        // 以第一个名字为比较基准，公共前缀长度初始为它的全长
         String first = peopleNames[0];
         int prefixLength = first.length();
 
+        // 从第二个名字开始，依次与基准比较，不断缩短公共前缀
         for (int i = 1; i < peopleNames.length; i++) {
             String current = peopleNames[i];
             int j = 0;
+            // 逐字符比较，只在当前前缀范围内且未越过当前字符串末尾时继续
             while (j < prefixLength && j < current.length()) {
+                // 大小写不敏感：统一转小写后再比较
                 char a = Character.toLowerCase(first.charAt(j));
                 char b = Character.toLowerCase(current.charAt(j));
                 if (a != b) {
@@ -84,12 +95,15 @@ public class Solution_20261024_V2 {
                 }
                 j++;
             }
+            // j 即为基准与当前名字的公共前缀长度，整体公共前缀只会单调减小
             prefixLength = j;
+            // 已经没有公共前缀，后面无需再比较，提前退出
             if (prefixLength == 0) {
                 break;
             }
         }
 
+        // 截取公共前缀并按题目要求转为小写
         String prefix = first.substring(0, prefixLength);
         return prefix.toLowerCase();
     }
@@ -97,12 +111,15 @@ public class Solution_20261024_V2 {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
+        // 第 1 行：人数 N
         int peopleNamesSize = in.nextInt();
+        // 第 2 行：N 个空格分隔的名字（N = 0 时循环不执行，不会读取第二行）
         String[] peopleNames = new String[peopleNamesSize];
         for (int idx = 0; idx < peopleNamesSize; idx++) {
             peopleNames[idx] = in.next();
         }
 
+        // 计算结果并输出；与模板一致使用 print（不换行），无公共前缀时输出空
         String result = getTown(peopleNames);
         System.out.print(result);
 
